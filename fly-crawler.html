@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fly Crawler</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#06080A}
+a{color:#B6FF3B}a:hover{color:#E2FF9E}
+@keyframes flap{0%,100%{transform:scaleY(1) rotate(0deg)}50%{transform:scaleY(.25) rotate(-8deg)}}
+@keyframes flapR{0%,100%{transform:scaleY(1) rotate(0deg)}50%{transform:scaleY(.25) rotate(8deg)}}
+@keyframes hover{0%,100%{transform:translate(0,0) rotate(-4deg)}25%{transform:translate(10px,-14px) rotate(3deg)}50%{transform:translate(-6px,-6px) rotate(-2deg)}75%{transform:translate(-12px,8px) rotate(5deg)}}
+@keyframes wander{0%{transform:translate(8vw,120px) rotate(70deg)}12%{transform:translate(30vw,60px) rotate(100deg)}24%{transform:translate(52vw,240px) rotate(150deg)}36%{transform:translate(70vw,90px) rotate(60deg)}48%{transform:translate(86vw,320px) rotate(170deg)}60%{transform:translate(62vw,520px) rotate(240deg)}72%{transform:translate(34vw,420px) rotate(290deg)}84%{transform:translate(14vw,560px) rotate(320deg)}100%{transform:translate(8vw,120px) rotate(430deg)}}
+@keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes ring{0%{transform:scale(.6);opacity:.7}100%{transform:scale(1.6);opacity:0}}
+@keyframes gridpan{from{background-position:0 0}to{background-position:0 48px}}
+@keyframes logline{0%,8%{opacity:0;transform:translateX(-6px)}14%,88%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes glitch{0%,92%,100%{text-shadow:none;transform:none}93%{text-shadow:3px 0 #FF3B6B,-3px 0 #3BE7FF;transform:translateX(2px)}95%{text-shadow:-3px 0 #FF3B6B,3px 0 #3BE7FF;transform:translateX(-2px)}97%{text-shadow:none;transform:none}}
+.wl{transform-origin:60% 90%;animation:flap .06s linear infinite}
+.wr{transform-origin:40% 90%;animation:flapR .06s linear infinite}
+.fc-btn{transition:transform .15s,background .15s,box-shadow .15s}
+.fc-btn:hover{transform:translateY(-2px);box-shadow:0 0 0 1px #B6FF3B,0 0 28px rgba(182,255,59,.35)}
+.fc-card{transition:border-color .2s,transform .2s}
+.fc-card:hover{border-color:#B6FF3B;transform:translateY(-3px)}
+@media (max-width:760px){.fc-hero-title{font-size:56px !important}.fc-nav-links{display:none !important}.fc-big-fly{width:220px !important;height:220px !important}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:0s !important;animation-iteration-count:1 !important}}
+</style>
+
+</head>
+<body>
+
+<div style="position: relative; min-height: 100vh; background: #06080A; color: #E6EDE3; font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace; overflow: hidden">
+
+  <!-- moving grid -->
+  <div aria-hidden="true" style="position: absolute; inset: 0; background-image: linear-gradient(rgba(182,255,59,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(182,255,59,.06) 1px, transparent 1px); background-size: 48px 48px; animation: gridpan 3s linear infinite; pointer-events: none"></div>
+  <!-- scan line -->
+  <div aria-hidden="true" style="position: absolute; left: 0; right: 0; top: 0; height: 160px; background: linear-gradient(transparent, rgba(182,255,59,.07), transparent); animation: scan 6s linear infinite; pointer-events: none"></div>
+
+  <!-- wandering fly -->
+  <div aria-hidden="true" style="position: absolute; top: 0; left: 0; z-index: 5; animation: wander 22s ease-in-out infinite; pointer-events: none">
+    <svg width="44" height="44" viewBox="0 0 100 100" style="filter: drop-shadow(0 0 8px rgba(182,255,59,.6))">
+      <ellipse class="wl" cx="34" cy="38" rx="20" ry="11" fill="rgba(200,240,255,.35)" stroke="#B6FF3B" stroke-width="1.5" transform="rotate(-30 34 38)"></ellipse>
+      <ellipse class="wr" cx="66" cy="38" rx="20" ry="11" fill="rgba(200,240,255,.35)" stroke="#B6FF3B" stroke-width="1.5" transform="rotate(30 66 38)"></ellipse>
+      <ellipse cx="50" cy="60" rx="12" ry="20" fill="#11161A" stroke="#B6FF3B" stroke-width="2"></ellipse>
+      <circle cx="50" cy="34" r="10" fill="#11161A" stroke="#B6FF3B" stroke-width="2"></circle>
+      <circle cx="44" cy="31" r="5" fill="#FF3B6B"></circle>
+      <circle cx="56" cy="31" r="5" fill="#FF3B6B"></circle>
+    </svg>
+  </div>
+
+  <div style="position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column">
+
+    <!-- nav -->
+    <nav style="display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 24px 0; border-bottom: 1px solid rgba(182,255,59,.15); flex-wrap: wrap">
+      <a href="#top" style="display: flex; align-items: center; gap: 10px; text-decoration: none; color: #E6EDE3; font-weight: 800; letter-spacing: .12em; font-size: 14px">
+        <span style="width: 10px; height: 10px; background: #B6FF3B; border-radius: 50%; box-shadow: 0 0 12px #B6FF3B"></span>
+        FLY_CRAWLER
+      </a>
+      <div class="fc-nav-links" style="display: flex; gap: 32px; font-size: 13px; letter-spacing: .08em">
+        <a href="#crawl" style="text-decoration: none; color: #9AA59A">/how</a>
+        <a href="#tokenomics" style="text-decoration: none; color: #9AA59A">/tokenomics</a>
+        <a href="#feed" style="text-decoration: none; color: #9AA59A">/feed</a>
+      </div>
+      <a href="[BUY LINK]" class="fc-btn" style="text-decoration: none; background: #B6FF3B; color: #06080A; font-weight: 800; font-size: 13px; padding: 14px 20px; border-radius: 4px; letter-spacing: .08em">BUY [$TICKER]</a>
+    </nav>
+
+    <!-- hero -->
+    <section id="top" style="display: flex; flex-wrap: wrap; align-items: center; gap: 48px; padding: 96px 0 80px">
+      <div style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 28px">
+        <div style="display: inline-flex; align-self: flex-start; align-items: center; gap: 10px; border: 1px solid rgba(182,255,59,.35); padding: 8px 14px; border-radius: 999px; font-size: 12px; color: #B6FF3B; letter-spacing: .1em">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: #B6FF3B; animation: blink 1s step-end infinite"></span>
+          CRAWLER ONLINE · SOLANA
+        </div>
+        <h1 class="fc-hero-title" style="margin: 0; font-family: 'Space Grotesk', 'JetBrains Mono', sans-serif; font-weight: 700; font-size: 104px; line-height: .9; letter-spacing: -.04em; animation: glitch 5s infinite">FLY<br><span style="color: #B6FF3B">CRAWLER</span></h1>
+        <p style="margin: 0; max-width: 520px; font-size: 16px; line-height: 1.7; color: #9AA59A">A fly loose in the trenches. It lands on every chart, crawls every contract, and buzzes off before you blink. <span style="color: #E6EDE3">[ONE-LINE PITCH]</span></p>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: stretch">
+          <button id="copyBtn" class="fc-btn" style="display: flex; align-items: center; gap: 14px; min-height: 52px; background: #0D1114; border: 1px solid rgba(182,255,59,.35); color: #E6EDE3; font-family: inherit; font-size: 13px; padding: 0 18px; border-radius: 4px; cursor: pointer">
+            <span style="color: #6C766C">CA</span>
+            <span id="ca">[CONTRACT ADDRESS]</span>
+            <span style="color: #B6FF3B; font-weight: 800"><span id="copyLbl">COPY</span></span>
+          </button>
+          <a href="[CHART LINK]" class="fc-btn" style="display: flex; align-items: center; min-height: 52px; padding: 0 20px; border: 1px solid #2A332A; border-radius: 4px; color: #E6EDE3; text-decoration: none; font-size: 13px; letter-spacing: .08em">CHART ↗</a>
+        </div>
+      </div>
+      <div style="flex: 1 1 340px; display: flex; justify-content: center; align-items: center; position: relative; min-height: 380px">
+        <div aria-hidden="true" style="position: absolute; width: 320px; height: 320px; border-radius: 50%; border: 1px solid #B6FF3B; animation: ring 2.4s ease-out infinite"></div>
+        <div aria-hidden="true" style="position: absolute; width: 320px; height: 320px; border-radius: 50%; border: 1px solid #B6FF3B; animation: ring 2.4s ease-out 1.2s infinite"></div>
+        <div aria-hidden="true" style="position: absolute; width: 360px; height: 360px; border-radius: 50%; border: 1px dashed rgba(182,255,59,.25)"></div>
+        <svg class="fc-big-fly" width="300" height="300" viewBox="0 0 100 100" aria-label="Fly Crawler mascot" style="animation: hover 3s ease-in-out infinite; filter: drop-shadow(0 0 24px rgba(182,255,59,.45))">
+          <g stroke="#B6FF3B" stroke-width="1.2" fill="none" stroke-linecap="round">
+            <path d="M42 52 L28 46 L20 52"></path><path d="M42 60 L26 62 L18 70"></path><path d="M44 68 L32 78 L28 88"></path>
+            <path d="M58 52 L72 46 L80 52"></path><path d="M58 60 L74 62 L82 70"></path><path d="M56 68 L68 78 L72 88"></path>
+          </g>
+          <ellipse class="wl" cx="32" cy="40" rx="22" ry="10" fill="rgba(200,240,255,.22)" stroke="#B6FF3B" stroke-width=".8" transform="rotate(-28 32 40)"></ellipse>
+          <ellipse class="wr" cx="68" cy="40" rx="22" ry="10" fill="rgba(200,240,255,.22)" stroke="#B6FF3B" stroke-width=".8" transform="rotate(28 68 40)"></ellipse>
+          <ellipse cx="50" cy="62" rx="11" ry="20" fill="#0D1114" stroke="#B6FF3B" stroke-width="1.4"></ellipse>
+          <path d="M40 58 H60 M40 64 H60 M41 70 H59" stroke="rgba(182,255,59,.5)" stroke-width=".8"></path>
+          <ellipse cx="50" cy="42" rx="10" ry="7" fill="#0D1114" stroke="#B6FF3B" stroke-width="1.4"></ellipse>
+          <circle cx="50" cy="30" r="9" fill="#0D1114" stroke="#B6FF3B" stroke-width="1.4"></circle>
+          <circle cx="44" cy="27" r="6" fill="#FF3B6B"></circle>
+          <circle cx="56" cy="27" r="6" fill="#FF3B6B"></circle>
+          <circle cx="42.5" cy="25" r="1.6" fill="#FFE1E8"></circle>
+          <circle cx="54.5" cy="25" r="1.6" fill="#FFE1E8"></circle>
+          <path d="M47 21 L42 12 M53 21 L58 12" stroke="#B6FF3B" stroke-width="1" fill="none"></path>
+        </svg>
+      </div>
+    </section>
+  </div>
+
+  <!-- marquee -->
+  <div aria-hidden="true" style="position: relative; z-index: 2; border-top: 1px solid rgba(182,255,59,.2); border-bottom: 1px solid rgba(182,255,59,.2); background: #B6FF3B; color: #06080A; overflow: hidden; white-space: nowrap; padding: 14px 0; font-weight: 800; font-size: 14px; letter-spacing: .14em">
+    <div style="display: inline-block; animation: marquee 18s linear infinite">BZZZ ✦ FLY CRAWLER ✦ CRAWLING THE TRENCHES ✦ [$TICKER] ✦ BZZZ ✦ FLY CRAWLER ✦ CRAWLING THE TRENCHES ✦ [$TICKER] ✦ BZZZ ✦ FLY CRAWLER ✦ CRAWLING THE TRENCHES ✦ [$TICKER] ✦ BZZZ ✦ FLY CRAWLER ✦ CRAWLING THE TRENCHES ✦ [$TICKER] ✦ </div>
+  </div>
+
+  <div style="position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; flex-direction: column">
+
+    <!-- how -->
+    <section id="crawl" style="padding: 112px 0 48px; display: flex; flex-direction: column; gap: 40px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <span style="color: #B6FF3B; font-size: 12px; letter-spacing: .2em">// 01 — HOW IT CRAWLS</span>
+        <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 48px; letter-spacing: -.03em">Land. Crawl. Buzz.</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px">
+        <div class="fc-card" style="background: #0B0F12; border: 1px solid #1C241C; border-radius: 6px; padding: 28px; display: flex; flex-direction: column; gap: 14px">
+          <span style="font-size: 12px; color: #6C766C">[01]</span>
+          <h3 style="margin: 0; font-size: 20px; font-family: 'Space Grotesk', sans-serif">Land</h3>
+          <p style="margin: 0; color: #9AA59A; font-size: 14px; line-height: 1.7">[What the token / project does first]</p>
+        </div>
+        <div class="fc-card" style="background: #0B0F12; border: 1px solid #1C241C; border-radius: 6px; padding: 28px; display: flex; flex-direction: column; gap: 14px">
+          <span style="font-size: 12px; color: #6C766C">[02]</span>
+          <h3 style="margin: 0; font-size: 20px; font-family: 'Space Grotesk', sans-serif">Crawl</h3>
+          <p style="margin: 0; color: #9AA59A; font-size: 14px; line-height: 1.7">[The core mechanic or utility]</p>
+        </div>
+        <div class="fc-card" style="background: #0B0F12; border: 1px solid #1C241C; border-radius: 6px; padding: 28px; display: flex; flex-direction: column; gap: 14px">
+          <span style="font-size: 12px; color: #6C766C">[03]</span>
+          <h3 style="margin: 0; font-size: 20px; font-family: 'Space Grotesk', sans-serif">Buzz</h3>
+          <p style="margin: 0; color: #9AA59A; font-size: 14px; line-height: 1.7">[Community / what holders get]</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- tokenomics + feed -->
+    <section style="padding: 64px 0; display: flex; flex-wrap: wrap; gap: 16px">
+      <div id="tokenomics" style="flex: 1 1 360px; background: #0B0F12; border: 1px solid #1C241C; border-radius: 6px; padding: 32px; display: flex; flex-direction: column; gap: 24px">
+        <span style="color: #B6FF3B; font-size: 12px; letter-spacing: .2em">// 02 — TOKENOMICS</span>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 11px; color: #6C766C; letter-spacing: .14em">SUPPLY</span><span style="font-size: 22px; font-weight: 800">[SUPPLY]</span></div>
+          <div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 11px; color: #6C766C; letter-spacing: .14em">TAX</span><span style="font-size: 22px; font-weight: 800">[TAX]</span></div>
+          <div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 11px; color: #6C766C; letter-spacing: .14em">LIQUIDITY</span><span style="font-size: 22px; font-weight: 800">[LP STATUS]</span></div>
+          <div style="display: flex; flex-direction: column; gap: 6px"><span style="font-size: 11px; color: #6C766C; letter-spacing: .14em">CHAIN</span><span style="font-size: 22px; font-weight: 800">SOLANA</span></div>
+        </div>
+      </div>
+      <div id="feed" style="flex: 1 1 360px; background: #050607; border: 1px solid #1C241C; border-radius: 6px; overflow: hidden; display: flex; flex-direction: column">
+        <div style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #1C241C; font-size: 12px; color: #6C766C">
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #FF3B6B"></span>
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #F5C542"></span>
+          <span style="width: 10px; height: 10px; border-radius: 50%; background: #B6FF3B"></span>
+          <span style="margin-left: 8px">crawler@trenches:~</span>
+        </div>
+        <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px; font-size: 13px; line-height: 1.5">
+          <div style="animation: logline 8s infinite 0s"><span style="color: #6C766C">$</span> fly --init</div>
+          <div style="animation: logline 8s infinite .6s; color: #9AA59A">› wings calibrated</div>
+          <div style="animation: logline 8s infinite 1.2s; color: #9AA59A">› compound eyes: 4,000 lenses online</div>
+          <div style="animation: logline 8s infinite 1.8s; color: #9AA59A">› scanning charts…</div>
+          <div style="animation: logline 8s infinite 2.4s; color: #9AA59A">› landed on [$TICKER]</div>
+          <div style="animation: logline 8s infinite 3s; color: #B6FF3B">✓ crawl complete · bzzz</div>
+          <div><span style="color: #6C766C">$</span> <span style="display: inline-block; width: 9px; height: 16px; background: #B6FF3B; vertical-align: middle; animation: blink 1s step-end infinite"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- cta -->
+    <section style="padding: 96px 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 28px">
+      <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 64px; line-height: 1; letter-spacing: -.04em">Don't swat it.<br><span style="color: #B6FF3B">Ride it.</span></h2>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px">
+        <a href="[BUY LINK]" class="fc-btn" style="text-decoration: none; background: #B6FF3B; color: #06080A; font-weight: 800; font-size: 14px; padding: 18px 28px; border-radius: 4px; letter-spacing: .08em">BUY [$TICKER]</a>
+        <a href="[X LINK]" class="fc-btn" aria-label="X / Twitter" style="text-decoration: none; display: flex; align-items: center; justify-content: center; border: 1px solid #2A332A; color: #E6EDE3; font-size: 14px; padding: 18px 24px; border-radius: 4px">X</a>
+        <a href="[TELEGRAM LINK]" class="fc-btn" style="text-decoration: none; display: flex; align-items: center; justify-content: center; border: 1px solid #2A332A; color: #E6EDE3; font-size: 14px; padding: 18px 24px; border-radius: 4px">TELEGRAM</a>
+      </div>
+    </section>
+
+    <footer style="border-top: 1px solid #1C241C; padding: 28px 0 40px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 12px; color: #6C766C">
+      <span>© FLY CRAWLER</span>
+      <span>Meme token. No promises, no roadmap guarantees. DYOR.</span>
+    </footer>
+  </div>
+</div>
+
+<script>
+document.getElementById('copyBtn').addEventListener('click',async()=>{
+  const ca=document.getElementById('ca').textContent.trim(), l=document.getElementById('copyLbl');
+  try{await navigator.clipboard.writeText(ca);l.textContent='COPIED';}catch(e){l.textContent='COPY FAILED';}
+  setTimeout(()=>l.textContent='COPY',1600);
+});
+</script>
+</body>
+</html>
